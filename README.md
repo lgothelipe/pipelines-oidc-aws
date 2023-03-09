@@ -6,8 +6,8 @@
 
 1\. AWS IAM Identity provider
 
-- **Provider:** https://oidc.circleci.com/org/${ORGANIZATION_ID}
-- **Audience:** ${ORGANIZATION_ID}
+- **Provider:** `https://oidc.circleci.com/org/${ORGANIZATION_ID}`
+- **Audience:** `${ORGANIZATION_ID}`
 - **Thumbprints:** "Generate when creating Identity provider"
 
 2\. AWS Role Trust relationships:
@@ -50,8 +50,8 @@
 
 1\. AWS IAM Identity provider
 
-- **Provider:** https://token.actions.githubusercontent.com
-- **Audience:** sts.amazonaws.com
+- **Provider:** `https://token.actions.githubusercontent.com`
+- **Audience:** `sts.amazonaws.com`
 - **Thumbprints:** "Generate when creating Identity provider"
 
 2\. AWS Role Trust relationships:
@@ -92,8 +92,8 @@
 
 Provider and audience from `Repository Settings` -> `OpenID Connect`
 
-- **Provider:** https://api.bitbucket.org/2.0/workspaces/<WORKSPACE>/pipelines-config/identity/oidc
-- **Audience:** ari:cloud:bitbucket::workspace/<WORKSPACE_ID>
+- **Provider:** `https://api.bitbucket.org/2.0/workspaces/<WORKSPACE>/pipelines-config/identity/oidc`
+- **Audience:** `ari:cloud:bitbucket::workspace/<WORKSPACE_ID>`
 - **Thumbprints:** "Generate when creating Identity provider"
 
 2\. AWS Role Trust relationships:
@@ -129,8 +129,8 @@ Provider and audience from `Repository Settings` -> `OpenID Connect`
 
 1\. AWS IAM Identity provider
 
-- **Provider:** https://gitlab.com 
-- **Audience:** https://gitlab.com
+- **Provider:** `https://gitlab.com`
+- **Audience:** `https://gitlab.com`
 - **Thumbprints:** "Generate when creating Identity provider"
 
 2\. AWS Role Trust relationships:
@@ -166,8 +166,8 @@ Provider and audience from `Repository Settings` -> `OpenID Connect`
 
 1\. AWS IAM Identity provider
 
-- **Provider:** https://agent.buildkite.com
-- **Audience:** sts.amazonaws.com
+- **Provider:** `https://agent.buildkite.com`
+- **Audience:** `sts.amazonaws.com`
 - **Thumbprints:** "Generate when creating Identity provider"
 
 2\. AWS Role Trust relationships:
