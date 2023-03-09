@@ -2,7 +2,7 @@
 
 ## CircleCI
 
-[Using OpenID Connect Tokens in Jobs](https://circleci.com/docs/openid-connect-tokens/)
+[CircleCI OIDC documentation](https://circleci.com/docs/openid-connect-tokens/)
 
 1\. AWS IAM Identity provider
 
@@ -20,12 +20,12 @@
             "Effect": "Allow",
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Principal": {
-                "Federated": "arn:aws:iam::AWS_ACCOUNT:oidc-provider/oidc.circleci.com/org/ORGANIZATION_ID"
+                "Federated": "arn:aws:iam::{AWS_ACCOUNT}:oidc-provider/oidc.circleci.com/org/{ORGANIZATION_ID}"
             },
             "Condition": {
                 "StringEquals": {
-                    "oidc.circleci.com/org/ORGANIZATION_ID:aud": [
-                        "ORGANIZATION_ID"
+                    "oidc.circleci.com/org/{ORGANIZATION_ID}:aud": [
+                        "{ORGANIZATION_ID}"
                     ]
                 }
             }
@@ -46,7 +46,7 @@
 
 ## GitHub Actions
 
-[Configuring OpenID Connect in Amazon Web Services](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
+[GitHub Actions OIDC documentation](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
 
 1\. AWS IAM Identity provider
 
@@ -63,7 +63,7 @@
         {
             "Effect": "Allow",
             "Principal": {
-                "Federated": "arn:aws:iam::AWS_ACCOUNT:oidc-provider/token.actions.githubusercontent.com"
+                "Federated": "arn:aws:iam::{AWS_ACCOUNT}:oidc-provider/token.actions.githubusercontent.com"
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
@@ -83,3 +83,42 @@
 
 - Workflow example: [oidc-aws.yml](./.github/workflows/oidc-aws.yml) 
 - Replace ROLE_ARN and AWS_REGION from `oidc-aws.yml` envs
+
+## BitBucket Pipelines
+
+[BitBucket Pipelines OIDC documentation](https://support.atlassian.com/bitbucket-cloud/docs/deploy-on-aws-using-bitbucket-pipelines-openid-connect/)
+
+1\. AWS IAM Identity provider
+
+Provider and audience from `Repository Settings` -> `OpenID Connect`
+
+- **Provider:** https://api.bitbucket.org/2.0/workspaces/<WORKSPACE>/pipelines-config/identity/oidc
+- **Audience:** ari:cloud:bitbucket::workspace/<WORKSPACE_ID>
+- **Thumbprints:** "Generate when creating Identity provider"
+
+2\. AWS Role Trust relationships:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::{AWS_ACCOUNT}:oidc-provider/api.bitbucket.org/2.0/workspaces/{WORKSPACE}/pipelines-config/identity/oidc"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringLike": {
+                    "api.bitbucket.org/2.0/workspaces/{WORKSPACE}/pipelines-config/identity/oidc:sub": "{REPO_UUID}:*"
+                }
+            }
+        }
+    ]
+}
+```
+
+3\. Set up workflow using `oidc: true`
+
+- Workflow example: [bitbucket-pipelines.yml](./bitbucket-pipelines.yml) 
+- Replace AWS_REGION and AWS_ROLE_ARN from `bitbucket-pipelines.yml` envs

@@ -1,0 +1,13 @@
+image: amazon/aws-cli
+
+pipelines:
+  default:
+    - step:
+        name: 'OIDC Test'
+        oidc: true
+        script:
+          - export AWS_REGION=ap-southeast-2
+          - export AWS_ROLE_ARN=arn:aws:iam::${ACCOUNT_ID}:role/${ROLE_NAME}
+          - export AWS_WEB_IDENTITY_TOKEN_FILE=$(pwd)/web-identity-token
+          - echo $BITBUCKET_STEP_OIDC_TOKEN > $(pwd)/web-identity-token
+          - aws sts get-caller-identity
