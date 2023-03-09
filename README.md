@@ -122,3 +122,40 @@ Provider and audience from `Repository Settings` -> `OpenID Connect`
 
 - Workflow example: [bitbucket-pipelines.yml](./bitbucket-pipelines.yml) 
 - Replace AWS_REGION and AWS_ROLE_ARN from `bitbucket-pipelines.yml` envs
+
+## GitLab CI
+
+[GitLab CI OIDC documentation](https://docs.gitlab.com/ee/ci/cloud_services/aws/)
+
+1\. AWS IAM Identity provider
+
+- **Provider:** https://gitlab.com 
+- **Audience:** https://gitlab.com
+- **Thumbprints:** "Generate when creating Identity provider"
+
+2\. AWS Role Trust relationships:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::{AWS_ACCOUNT}:oidc-provider/gitlab.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringLike": {
+                "gitlab.com:sub": "project_path:{GITLAB_USERID}/{PROJECT_NAME}:ref_type:branch:ref:main"
+                }
+            }
+        }
+    ]
+}
+```
+
+3\. Set up workflow using `.gitlab-ci.yml`
+
+- Workflow example: [gitlab-ci.yml](./.gitlab-ci.yml) 
+- Replace AWS_REGION and AWS_ROLE_ARN from `gitlab-ci.yml` envs
