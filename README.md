@@ -41,5 +41,5 @@
 
 4\. Set up workflow using `circleci/aws-cli@3.1`
 
-- [Example](./circleci/config.yml)
+- [config.yml](./.circleci/config.yml) example
 - Replace ACCOUNT_ID and ROLE_NAME from `config.yml`
