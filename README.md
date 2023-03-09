@@ -159,3 +159,40 @@ Provider and audience from `Repository Settings` -> `OpenID Connect`
 
 - Workflow example: [gitlab-ci.yml](./.gitlab-ci.yml) 
 - Replace AWS_REGION and AWS_ROLE_ARN from `gitlab-ci.yml` envs
+
+## BuildKite
+
+[BuildKite documentation](https://buildkite.com/docs/pipelines)
+
+1\. AWS IAM Identity provider
+
+- **Provider:** https://agent.buildkite.com
+- **Audience:** sts.amazonaws.com
+- **Thumbprints:** "Generate when creating Identity provider"
+
+2\. AWS Role Trust relationships:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::{AWS_ACCOUNT}:oidc-provider/agent.buildkite.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringLike": {
+                "agent.buildkite.com:sub": "organization:{ORG_NAME}:pipeline:{PIPELINE_NAME}:ref:refs/heads/main"
+                }
+            }
+        }
+    ]
+}
+```
+
+3\. Set up workflow using `pipeline.yml`
+
+- Workflow example: [pipeline.yml](./.buildkite/pipeline.yml) 
+- Replace AWS_REGION and AWS_ROLE_ARN from `pipeline.yml` envs

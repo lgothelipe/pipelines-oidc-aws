@@ -1,0 +1,7 @@
+steps:
+  - label: ':buildkite::key::aws:: Test OIDC'
+    # branches: placeholder
+    plugins:
+      - aws-assume-role-with-web-identity:
+          role-arn: arn:aws:iam::AWS-ACCOUNT-ID:role/SOME-ROLE
+    command: aws sts get-caller-identity
