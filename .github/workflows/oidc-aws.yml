@@ -1,0 +1,28 @@
+name: OIDC AWS
+
+permissions:
+  id-token: write
+  contents: read
+
+on: workflow_dispatch
+
+env:
+  ROLE_ARN : "arn:aws:iam::${ACCOUNT_ID}:role/${ROLE_NAME}"
+  AWS_REGION : "ap-southeast-2"
+
+jobs:
+  GetCredentials:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/placeholder'
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          role-session-name: gitactions
+          aws-region: ${{ env.AWS_REGION }}
+      # Get caller identity
+      - name:  aws caller identity
+        run: aws sts get-caller-identity
