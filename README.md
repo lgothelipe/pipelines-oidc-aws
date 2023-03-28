@@ -162,7 +162,9 @@ Provider and audience from `Repository Settings` -> `OpenID Connect`
 
 ## BuildKite
 
-[BuildKite documentation](https://buildkite.com/docs/pipelines)
+[BuildKite pipelines documentation](https://buildkite.com/docs/pipelines)
+
+[BuildKite OIDC documentation](https://www.youtube.com/watch?v=Wd6Q4Vyb-DI&t=191s&ab_channel=Buildkite)
 
 1\. AWS IAM Identity provider
 
